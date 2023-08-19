@@ -1,6 +1,7 @@
 from flask import Flask
 import os
 from src.extensions import db
+from src.controllers.user_controller import user_blueprint
 
 SERVICE1_URL = "http://localhost:5001"
 
@@ -16,5 +17,7 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+
+    app.register_blueprint(user_blueprint)
 
     return app
