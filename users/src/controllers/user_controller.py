@@ -1,3 +1,5 @@
+import time
+
 from flask import jsonify, Blueprint, request
 from src.models.user_model import Users
 from src.repositories.user_repository import UserRepository
@@ -25,3 +27,23 @@ def create_owner():
 
     return jsonify({'message': 'New user created'}), 201
 
+
+@user_blueprint.route("/users/login", methods=["POST"])
+def check_user():
+    st = time.time()
+    data = request.json
+    email = data.get('email')
+    user = Users.query.filter_by(email=email).first()
+
+    if user:
+        user_info = {
+            'id': user.id,
+            'email': user.email,
+            'password': user.password
+        }
+        et = time.time()
+        elapsed_time = et - st
+        print('Execution time:', elapsed_time, 'seconds')
+        return jsonify(user_info), 200
+    else:
+        return jsonify({'error': 'Bad request'}), 400
