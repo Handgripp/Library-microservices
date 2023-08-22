@@ -1,9 +1,9 @@
 import datetime
-import time
 import jwt
 from flask import jsonify, Blueprint, request, current_app
 from werkzeug.security import check_password_hash
 import requests
+
 auth_blueprint = Blueprint('auth', __name__)
 
 USERS_MICROSERVICE_URL = "http://localhost:5001"
@@ -17,12 +17,7 @@ def login():
     if not data or not data['email'] or not data['password']:
         return jsonify({'error': 'Invalid credentials'}), 401
 
-    email = data['email']
-    st = time.time()
-    response = requests.post(f"{USERS_MICROSERVICE_URL}/users/login", json={'email': email})
-    end = time.time()
-    finish = end - st
-    print(finish)
+    response = requests.post(f"{USERS_MICROSERVICE_URL}/users/login", json={'email': data['email']})
     user_exists = response.json()
 
     print("auth correlation_id: ", correlation_id)

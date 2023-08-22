@@ -14,5 +14,17 @@ class UserRepository:
         db.session.add(new_user)
         db.session.commit()
 
+    @staticmethod
+    def get_one_by_id(user_id):
+        user = Users.query.filter_by(id=user_id).first()
+        if not user:
+            return None
 
+        user_data = {
+            'id': user.id,
+            'email': user.email,
+            'role': user.role
+        }
+
+        return user_data
 
