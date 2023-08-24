@@ -1,3 +1,5 @@
+import uuid
+
 from flask import jsonify, Blueprint, request
 from src.models.user_model import Users
 from src.repositories.user_repository import UserRepository
@@ -28,6 +30,11 @@ def create_owner():
 
 @user_blueprint.route('/users/<user_id>', methods=['GET'])
 def get_one_user(user_id):
+    try:
+        uuid.UUID(user_id, version=4)
+    except ValueError:
+        return jsonify({'error': 'Invalid uuid format'}), 400
+
     correlation_id = request.headers.get('correlation_id')
 
     user_data = UserRepository.get_one_by_id(user_id)
@@ -41,14 +48,20 @@ def get_one_user(user_id):
 @user_blueprint.route("/users/login", methods=["POST"])
 def check_user():
     data = request.json
-    email = data.get('email')
-    user = Users.query.filter_by(email=email).first()
+    user = None
+    if data.get('email'):
+        email = data.get('email')
+        user = Users.query.filter_by(email=email).first()
+    if data.get('id'):
+        user_id = data.get('id')
+        user = Users.query.filter_by(id=user_id).first()
 
     if user:
         user_info = {
             'id': user.id,
             'email': user.email,
-            'password': user.password
+            'password': user.password,
+            'role': user.role
         }
         return jsonify(user_info), 200
     else:

@@ -1,14 +1,11 @@
 from functools import wraps
-
 import jwt
 from flask import jsonify, Blueprint, request, current_app
 import requests
 import uuid
+from constans import USERS_MICROSERVICE_URL, AUTH_MICROSERVICE_URL
 
 auth_blueprint = Blueprint('auth', __name__)
-
-AUTH_MICROSERVICE_URL = "http://localhost:5002"
-USERS_MICROSERVICE_URL = "http://localhost:5001"
 
 
 def token_required(f):
@@ -24,9 +21,10 @@ def token_required(f):
             return jsonify({'error': 'Token is missing!'}), 401
 
         try:
-            data = jwt.decode(token, secret_key, algorithms=['HS256'])
+            data = jwt.decode(token, 'thisissecret', algorithms=['HS256'])
             response = requests.post(f"{USERS_MICROSERVICE_URL}/users/login", json={'id': data['id']})
             current_user = response.json()
+
             if not current_user:
                 return jsonify({'error': 'User not found'}), 401
             kwargs['current_user'] = current_user
