@@ -1,9 +1,13 @@
+from dotenv import load_dotenv
 from flask import Flask
 import os
 from src.controllers.user_controller import user_blueprint
 from src.controllers.auth_controller import auth_blueprint
 from src.controllers.book_controller import book_blueprint
 from src.controllers.rent_controller import rent_blueprint
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 def create_app():
     app = Flask(__name__)

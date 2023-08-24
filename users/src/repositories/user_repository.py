@@ -15,7 +15,7 @@ class UserRepository:
         db.session.commit()
 
     @staticmethod
-    def get_one_by_id(user_id):
+    def get_user_by_id(user_id):
         user = Users.query.filter_by(id=user_id).first()
         if not user:
             return None
@@ -23,7 +23,26 @@ class UserRepository:
         user_data = {
             'id': user.id,
             'email': user.email,
-            'role': user.role
+            'role': user.role,
+            'created_at': user.created_at,
+            'updated_at': user.updated_at
+        }
+
+        return user_data
+
+    @staticmethod
+    def get_user_by_email(email):
+        user = Users.query.filter_by(email=email).first()
+
+        if not user:
+            return None
+
+        user_data = {
+            'id': user.id,
+            'email': user.email,
+            'role': user.role,
+            'created_at': user.created_at,
+            'updated_at': user.updated_at
         }
 
         return user_data

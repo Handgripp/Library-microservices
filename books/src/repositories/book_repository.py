@@ -24,7 +24,7 @@ class BookRepository:
             'id': book.id,
             'book_name': book.book_name,
             'number_of_books': book.number_of_books,
-            'added_at': book.added_at,
+            'created_at': book.added_at,
             'updated_at': book.updated_at
         }
 

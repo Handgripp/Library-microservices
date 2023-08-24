@@ -1,13 +1,11 @@
 import datetime
 import jwt
-from flask import jsonify, Blueprint, request, current_app
+from flask import jsonify, Blueprint, request, current_app, app
 from werkzeug.security import check_password_hash
 import requests
 from constans import USERS_MICROSERVICE_URL
 
 auth_blueprint = Blueprint('auth', __name__)
-
-
 
 
 @auth_blueprint.route('/login', methods=['POST'])

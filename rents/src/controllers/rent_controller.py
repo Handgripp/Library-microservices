@@ -32,7 +32,7 @@ def rent(book_id):
 
 
 @rent_blueprint.route('/rents/<rent_id>', methods=['GET'])
-def get_one_user(rent_id):
+def get_one(rent_id):
     try:
         uuid.UUID(rent_id, version=4)
     except ValueError:

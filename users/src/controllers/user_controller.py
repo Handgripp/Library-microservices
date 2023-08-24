@@ -10,11 +10,11 @@ user_blueprint = Blueprint('user', __name__)
 @user_blueprint.route("/users", methods=["POST"])
 def create_owner():
     data = request.json
-    email = Users.query.filter_by(email=data['email']).first()
+    user = UserRepository.get_user_by_email(data["email"])
 
     correlation_id = request.headers.get('correlation_id')
 
-    if email:
+    if user:
         return jsonify({'error': 'User with that email already exists'}), 409
 
     UserRepository.create_user(
@@ -37,7 +37,7 @@ def get_one_user(user_id):
 
     correlation_id = request.headers.get('correlation_id')
 
-    user_data = UserRepository.get_one_by_id(user_id)
+    user_data = UserRepository.get_user_by_id(user_id)
     print("microservice users get one:", correlation_id)
     if not user_data:
         return jsonify({'error': 'No user found!'}), 404
@@ -51,18 +51,12 @@ def check_user():
     user = None
     if data.get('email'):
         email = data.get('email')
-        user = Users.query.filter_by(email=email).first()
+        user = UserRepository.get_user_by_email(email)
     if data.get('id'):
         user_id = data.get('id')
-        user = Users.query.filter_by(id=user_id).first()
+        user = UserRepository.get_user_by_id(user_id)
 
     if user:
-        user_info = {
-            'id': user.id,
-            'email': user.email,
-            'password': user.password,
-            'role': user.role
-        }
-        return jsonify(user_info), 200
+        return jsonify(user), 200
     else:
         return jsonify({'error': 'Bad request'}), 400

@@ -21,7 +21,7 @@ def token_required(f):
             return jsonify({'error': 'Token is missing!'}), 401
 
         try:
-            data = jwt.decode(token, 'thisissecret', algorithms=['HS256'])
+            data = jwt.decode(token, secret_key, algorithms=['HS256'])
             response = requests.post(f"{USERS_MICROSERVICE_URL}/users/login", json={'id': data['id']})
             current_user = response.json()
 
