@@ -47,3 +47,20 @@ class UserRepository:
 
         return user_data
 
+    @staticmethod
+    def get_user_by_email_with_pass(email):
+        user = Users.query.filter_by(email=email).first()
+
+        if not user:
+            return None
+
+        user_data = {
+            'id': user.id,
+            'email': user.email,
+            'role': user.role,
+            'created_at': user.created_at,
+            'updated_at': user.updated_at,
+            'password': user.password
+        }
+
+        return user_data

@@ -49,13 +49,12 @@ def get_one_user(user_id):
 def check_user():
     data = request.json
     user = None
-    if data.get('email'):
-        email = data.get('email')
-        user = UserRepository.get_user_by_email(email)
-    if data.get('id'):
-        user_id = data.get('id')
+    email = data.get('email')
+    user_id = data.get('id')
+    if email:
+        user = UserRepository.get_user_by_email_with_pass(email)
+    elif user_id:
         user = UserRepository.get_user_by_id(user_id)
-
     if user:
         return jsonify(user), 200
     else:
