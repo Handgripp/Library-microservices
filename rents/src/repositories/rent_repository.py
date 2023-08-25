@@ -22,8 +22,14 @@ class RentRepository:
             'user_id': rent.user_id,
             'book_id': rent.book_id,
             'rent_from': rent.rent_from,
-            'rent_to': rent.rent_to
+            'rent_to': rent.rent_to,
+            'returned': rent.returned
         }
 
         return rent_data
 
+    @staticmethod
+    def return_book(rent_id):
+        rent = Rents.query.filter_by(id=rent_id).first()
+        rent.returned = True
+        db.session.commit()

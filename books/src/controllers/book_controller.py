@@ -44,4 +44,26 @@ def get_one_book(book_id):
     return jsonify(book_data), 200
 
 
+@book_blueprint.route('/books/<book_id>', methods=['PATCH'])
+def update(book_id):
+    try:
+        uuid.UUID(book_id, version=4)
+    except ValueError:
+        return jsonify({'error': 'Invalid uuid format'}), 400
+
+    book = Books.query.filter_by(id=book_id).first()
+    if not book:
+        return jsonify({'error': 'No book found!'}), 404
+
+    update_type = request.args.get('type')
+
+    if update_type == 'increment':
+        BookRepository.book_increment(book_id)
+        return jsonify({'message': 'Books increment'}), 200
+
+    if update_type == 'decrement':
+        BookRepository.book_decrement(book_id)
+        return jsonify({'message': 'Books decrement'}), 200
+
+
 

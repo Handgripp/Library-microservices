@@ -10,7 +10,7 @@ book_blueprint = Blueprint('book', __name__)
 
 @book_blueprint.route("/books", methods=["POST"])
 @token_required
-def create_user(current_user):
+def add_book(current_user):
     data = request.json
     correlation_id = str(uuid.uuid4())
 

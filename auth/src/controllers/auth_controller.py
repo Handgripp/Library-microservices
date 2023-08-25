@@ -1,6 +1,6 @@
 import datetime
 import jwt
-from flask import jsonify, Blueprint, request, current_app, app
+from flask import jsonify, Blueprint, request, current_app
 from werkzeug.security import check_password_hash
 import requests
 from constans import USERS_MICROSERVICE_URL

@@ -10,4 +10,5 @@ class Rents(db.Model):
     book_id = db.Column(db.String(120))
     rent_from = db.Column(DateTime)
     rent_to = db.Column(DateTime)
+    returned = db.Column(db.Boolean, default=False)
 

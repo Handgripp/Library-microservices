@@ -24,9 +24,22 @@ class BookRepository:
             'id': book.id,
             'book_name': book.book_name,
             'number_of_books': book.number_of_books,
-            'created_at': book.added_at,
+            'created_at': book.created_at,
             'updated_at': book.updated_at
         }
 
         return book_data
+
+    @staticmethod
+    def book_increment(book_id):
+        book = Books.query.filter_by(id=book_id).first()
+        book.number_of_books += 1
+        db.session.commit()
+
+    @staticmethod
+    def book_decrement(book_id):
+        book = Books.query.filter_by(id=book_id).first()
+        book.number_of_books -= 1
+        db.session.commit()
+
 
