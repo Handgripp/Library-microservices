@@ -7,7 +7,7 @@ book_blueprint = Blueprint('book', __name__)
 
 
 @book_blueprint.route("/books", methods=["POST"])
-def create_owner():
+def add_book():
     data = request.json
     book_name = Books.query.filter_by(book_name=data['book_name']).first()
 
@@ -42,5 +42,6 @@ def get_one_book(book_id):
         return jsonify({'error': 'No book found!'}), 404
 
     return jsonify(book_data), 200
+
 
 
